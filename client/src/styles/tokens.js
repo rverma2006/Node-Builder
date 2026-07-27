@@ -1,0 +1,45 @@
+export const iconBtn = {
+  background: "none",
+  border: "1px solid var(--border)",
+  borderRadius: 6,
+  color: "var(--fg-muted)",
+  cursor: "pointer",
+  width: 28,
+  height: 28,
+  padding: 0,
+  fontSize: 13,
+  flexShrink: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+export const addRowBtn = {
+  alignSelf: "flex-start",
+  background: "none",
+  border: "1px dashed var(--accent)",
+  borderRadius: 7,
+  color: "var(--accent)",
+  cursor: "pointer",
+  fontSize: 12,
+  fontWeight: 600,
+  padding: "6px 14px",
+  letterSpacing: "0.04em",
+};
+
+export const stepBtn = {
+  width: 26,
+  height: 26,
+  borderRadius: 6,
+  border: "1px solid var(--border)",
+  background: "var(--surface)",
+  color: "var(--fg)",
+  cursor: "pointer",
+  fontWeight: 700,
+  fontSize: 15,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: 0,
+  lineHeight: 1,
+};

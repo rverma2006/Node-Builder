@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:          #f8f8f7;
+  --card-bg:     #ffffff;
+  --surface:     #f4f4f2;
+  --surface2:    #efefed;
+  --border:      #e2e2de;
+  --border-mid:  #d0d0ca;
+  --fg:          #1a1a18;
+  --fg-muted:    #6b6b66;
+  --accent:      #2563eb;
+  --accent-soft: rgba(37,99,235,0.08);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Geist', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+input, textarea, button {
+  font-family: inherit;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent) !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-mid);
+  border-radius: 99px;
+}
