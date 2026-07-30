@@ -212,10 +212,11 @@ router.post("/:id/export", async (req, res) => {
   }
 
     async function insertTextboxValidationEntries(tb, attrUin) {
-      const kind       = tb.kind || "text";
-      const constraint = tb.constraint;
+      const now        = new Date();
+      const kind        = tb.kind || "text";
+      const constraint  = tb.constraint;
       const kindToTypeName = {
-        "int":   "whole number", "float": "decimal",
+        "int":   "whole number", "float": "decimal", "decimal": "decimal",
         "date":  "date",         "time":  "time", "text": "text length",
       };
       const constraintToDefName = {
@@ -227,7 +228,7 @@ router.post("/:id/export", async (req, res) => {
       const typeName = kindToTypeName[kind];
       let inserted = false;
 
-      if ((kind === "int" || kind === "float" || kind === "date" || kind === "time")
+      if ((kind === "int" || kind === "float" || kind === "decimal" || kind === "date" || kind === "time")
           && constraint && constraint !== "none" && tb.constraintA) {
         const defName = constraintToDefName[constraint];
         if (constraint === "between" || constraint === "notbetween") {
@@ -237,16 +238,16 @@ router.post("/:id/export", async (req, res) => {
             description: tb.constraintA || "", flag: 0, query: "", status: 1,
             created_date: now, modified_date: now,
           }, { transaction: t });
-         await RitvikAttrValidationEntries.create({
+          await RitvikAttrValidationEntries.create({
             module_elements_attribute_uin:        attrUin,
-            attribute_validation_type_details_id: getDetailsId(typeName, defName, "minimum"),
-            description: tb.constraintA || "", flag: 0, query: "", status: 1,
+            attribute_validation_type_details_id: getDetailsId(typeName, defName, "maximum"),
+            description: tb.constraintB || "", flag: 0, query: "", status: 1,
             created_date: now, modified_date: now,
           }, { transaction: t });
         } else {
-         await RitvikAttrValidationEntries.create({
+          await RitvikAttrValidationEntries.create({
             module_elements_attribute_uin:        attrUin,
-            attribute_validation_type_details_id: getDetailsId(typeName, defName, "minimum"),
+            attribute_validation_type_details_id: getDetailsId(typeName, defName, "value"),
             description: tb.constraintA || "", flag: 0, query: "", status: 1,
             created_date: now, modified_date: now,
           }, { transaction: t });
@@ -254,17 +255,17 @@ router.post("/:id/export", async (req, res) => {
         inserted = true;
       } else if (kind === "text" && tb.maxLength > 0) {
         await RitvikAttrValidationEntries.create({
-            module_elements_attribute_uin:        attrUin,
-            attribute_validation_type_details_id: getDetailsId(typeName, defName, "minimum"),
-            description: tb.constraintA || "", flag: 0, query: "", status: 1,
-            created_date: now, modified_date: now,
-          }, { transaction: t });
+          module_elements_attribute_uin:        attrUin,
+          attribute_validation_type_details_id: getDetailsId("text length", "less than or equal to", "value"),
+          description: String(tb.maxLength), flag: 0, query: "", status: 1,
+          created_date: now, modified_date: now,
+        }, { transaction: t });
         inserted = true;
       }
       // If validation was inserted, update the attribute's validation column to 1
       if (inserted) {
         await RitvikModuleElementsAttr.update(
-          { validation: 1 },
+          { validation: 1, modified_date: now },
           { where: { uin: attrUin }, transaction: t }
         );
       }
